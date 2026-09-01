@@ -128,4 +128,14 @@ The MIT License applies to the firmware code and does not grant rights to ESPFli
 ESPFlight Firmware v1.0.0
 https://espflight.com
 
+### License
+
+ESPFlight Firmware is open-source software licensed under the MIT License.
+
+You are free to use, modify, distribute, and build upon the firmware, including for commercial projects, subject to the terms of the MIT License.
+
+The ESPFlight name, logo, and other brand assets are not licensed under the MIT License.
+
+See the `LICENSE` file for details.
+
 </div>
