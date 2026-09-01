@@ -1,22 +1,20 @@
 <div align="center">
 
-ESPFlight Firmware
+# ESPFlight Firmware
 
-Open-source flight-control firmware for ESP-based drones
+**Open-source flight-control firmware for ESP-based drones**
 
-Learn. Experiment. Build.
+**Learn. Experiment. Build.**
 
+[Website](https://espflight.com) · Documentation · Hardware Reference
 
-
-
-
-Website · Documentation · Hardware Reference
+**Firmware v1.0.0**
 
 </div>
 
-Firmware v1.0.0
-
 ESPFlight Firmware is the open-source flight-control core of ESPFlight. It handles stabilization, motor control, safety logic, telemetry, configuration, and communication with the ESPFlight Application.
+
+## Features
 
 <table>
   <thead>
@@ -53,33 +51,40 @@ ESPFlight Firmware is the open-source flight-control core of ESPFlight. It handl
   </tbody>
 </table>
 
-ESPFlight is an experimental and educational flight-control platform. Validate every hardware configuration carefully before powered flight.
+> ESPFlight is an experimental and educational flight-control platform. Validate every hardware configuration carefully before powered flight.
 
-Quick Start
+## Quick Start
 
-1. Configure Wi-Fi
+### 1. Configure the firmware
 
-Open config.h and set:
+Open `config.h` and review the user and hardware configuration.
 
+Set your Wi-Fi credentials:
+
+```text
 YOUR_WIFI_SSID
 YOUR_WIFI_PASSWORD
+```
 
-2. Prepare the build environment
+Verify that the hardware-related settings match your build before continuing.
 
-Follow BUILDING.md to install the required Arduino environment, ESP board support, and libraries.
+### 2. Prepare the build environment
 
-3. Build and flash
+Follow [`BUILDING.md`](BUILDING.md) to install the required Arduino environment, ESP board support, and libraries.
 
-Open espflight.ino in the Arduino IDE, select the correct ESP board, and upload the firmware.
+### 3. Build and flash
 
-4. Connect the ESPFlight Application
+Open `espflight.ino` in the Arduino IDE, select the correct ESP board, compile the firmware, and upload it to the controller.
 
-After the controller joins the configured Wi-Fi network, the ESPFlight Application can discover controllers running compatible ESPFlight Firmware on the local network.
+### 4. Connect the ESPFlight Application
 
-Current communication version: Protocol 2.
+After the controller joins the configured Wi-Fi network, the ESPFlight Application can discover compatible controllers running ESPFlight Firmware on the local network.
 
-Repository
+**Current communication version:** Protocol 2
 
+## Repository Structure
+
+```text
 espflight.ino              Arduino entry point
 config.h                   User and hardware configuration
 firmware.cpp / .h          Firmware core
@@ -90,52 +95,46 @@ failsafe.cpp / .h          Safety and failsafe logic
 network.cpp / .h           Wi-Fi and communication
 altitude.cpp / .h          Altitude-assisted flight
 indicators.cpp / .h        Status indicators
+```
 
-Documentation included with the release:
+## Documentation
 
-BUILDING.md — build environment and flashing
+The following documentation is included with the firmware:
 
-VALIDATION.md — firmware and hardware validation
+* [`BUILDING.md`](BUILDING.md) — build environment and flashing
+* [`VALIDATION.md`](VALIDATION.md) — firmware and hardware validation
+* [`ASSISTED_FLIGHT.md`](ASSISTED_FLIGHT.md) — altitude-assisted flight
 
-ASSISTED_FLIGHT.md — altitude-assisted flight
-
-Safety
+## Safety
 
 ESPFlight controls real motors and flying hardware. Incorrect configuration, hardware faults, software defects, communication loss, or battery problems can cause injury or property damage.
 
 Before powered flight:
 
-test on the bench without propellers where appropriate;
-
-verify motor and propeller direction;
-
-verify IMU orientation and control directions;
-
-verify ARM / DISARM and failsafe behavior;
-
-keep people, animals, and property clear of the drone during testing.
+* Test on the bench without propellers where appropriate.
+* Verify motor and propeller direction.
+* Verify IMU orientation and control directions.
+* Verify ARM / DISARM and failsafe behavior.
+* Keep people, animals, and property clear of the drone during testing.
 
 Use ESPFlight at your own risk and follow applicable local laws and safety requirements.
 
-License
+## License
 
-ESPFlight Firmware is released under the MIT License. See LICENSE for the complete terms.
-
-The MIT License applies to the firmware code and does not grant rights to ESPFlight trademarks or brand assets.
-
-<div align="center">
-
-ESPFlight Firmware v1.0.0
-https://espflight.com
-
-### License
-
-ESPFlight Firmware is open-source software licensed under the MIT License.
+ESPFlight Firmware is open-source software licensed under the [MIT License](LICENSE).
 
 You are free to use, modify, distribute, and build upon the firmware, including for commercial projects, subject to the terms of the MIT License.
 
 The ESPFlight name, logo, and other brand assets are not licensed under the MIT License.
 
-See the `LICENSE` file for details.
+See the [`LICENSE`](LICENSE) file for the complete terms.
+
+---
+
+<div align="center">
+
+**ESPFlight Firmware v1.0.0**
+
+https://espflight.com
 
 </div>
