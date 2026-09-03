@@ -27,8 +27,8 @@ Takeoff/Hold relationship, five-centimeter Landing cutoff, mixer signs, or norma
 ## Flight timer
 
 - ARM-ready time is not counted as flight time.
-- Timing starts when the aircraft is ARMED and effective throttle first rises strictly above 1100.
-- While the aircraft remains ARMED, timing pauses whenever effective throttle is 1100 or below.
+- Timing starts when the Drone is ARMED and effective throttle first rises strictly above 1100.
+- While the Drone remains ARMED, timing pauses whenever effective throttle is 1100 or below.
 - Timing resumes when effective throttle rises strictly above 1100 again.
 - DISARM stops timing.
 - The reported value therefore represents accumulated powered-flight time rather than total ARMED duration.
