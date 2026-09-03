@@ -44,8 +44,8 @@ Protocol v2 separates ARM state from motor power:
 - ARM requires throttle <= 1050 plus healthy link, failsafe, battery and IMU checks.
 - ARMED with throttle <= 1050 keeps attitude PID reset and all motor PWM outputs at zero.
 - Normal motor output and attitude PID begin only after throttle rises above 1050.
-- Flight time is accumulated only while the aircraft is ARMED and the effective throttle is strictly above 1100; it pauses at 1100 or below and resumes on the next qualifying segment.
-- Returning throttle to <= 1050 stops normal motor PWM but keeps the aircraft ARMED.
+- Flight time is accumulated only while the Drone is ARMED and the effective throttle is strictly above 1100; it pauses at 1100 or below and resumes on the next qualifying segment.
+- Returning throttle to <= 1050 stops normal motor PWM but keeps the Drone ARMED.
 - Explicit DISARM at low throttle immediately resets PID/assist and writes zero PWM to all four motors.
 - A failsafe cannot power motors from an ARMED-ready state that never entered powered flight.
 
