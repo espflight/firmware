@@ -39,7 +39,7 @@ WebSocket ownership, and ACK behavior.
 - Altitude PID now stays active below the old 200-mm takeoff activation threshold; it is disconnected only after physical touchdown is confirmed.
 - Moving the landing setpoint no longer produces a derivative kick: derivative history is compensated by the exact setpoint delta, so the D term continues to react to real altitude motion instead of the commanded ramp itself.
 - The release safety logic hard-cuts Landing when two fresh raw VL53L0X measurements are <= 50 mm.
-- This five-centimeter cutoff does not wait for the application throttle ramp to finish: firmware resets assist/PID, DISARMs, and writes zero PWM immediately.
+- This five-centimeter cutoff does not wait for the application throttle ramp to finish: firmware resets assist/PID, DISARMS, and writes zero PWM immediately.
 - As a secondary endpoint, if Landing reaches `channel_3 <= 1050` before the range cutoff is seen, firmware also performs the same hard DISARM so motors cannot remain idling at 1050.
 - ARM/DISARM is explicit and never toggled by Throttle. During assisted Landing, firmware owns the descent and performs the final hard DISARM itself when the configured landing cutoff/fallback condition is reached.
 - If the normal assisted Landing cannot reach the floor within 12 seconds, the existing deterministic failsafe descent takes over instead of leaving the landing state active indefinitely.
@@ -86,13 +86,12 @@ Firmware ACK example:
 
 ## Final landing cutoff
 
-During an assisted Landing, motor power is removed as soon as two fresh raw VL53L0X measurements are at or below 50 mm. Altitude assistance is cleared, all PID runtime state is reset, the aircraft is disarmed, and PWM on all four motor pins is written to zero immediately. As a secondary safety endpoint, reaching channel_3 <= 1050 during Landing also hard-stops the motors so they can never remain idling at 1050 indefinitely.
-
+During an assisted Landing, motor power is removed as soon as two fresh raw VL53L0X measurements are at or below 50 mm. Altitude assistance is cleared, all PID runtime state is reset, the Drone is disarmed, and PWM on all four motor pins is written to zero immediately. As a secondary safety endpoint, reaching channel_3 <= 1050 during Landing also hard-stops the motors so they can never remain idling at 1050 indefinitely.
 
 ## ARM-ready motor behavior
 
 - ARM only changes the flight state to `ARMED`; all four motor PWM outputs remain zero while `channel_3 <= 1050`.
 - Normal attitude PID remains reset in the same low-throttle ARMED-ready state.
 - Motor PWM and normal attitude PID become active only after real Throttle rises above `1050`.
-- Flight time is counted only while the aircraft remains ARMED and the effective motor-owning Throttle is strictly above `1100`; low-throttle ARMED time is excluded.
+- Flight time is counted only while the Drone remains ARMED and the effective motor-owning Throttle is strictly above `1100`; low-throttle ARMED time is excluded.
 - DISARM is an explicit high-level command and immediately resets PID and forces all four PWM outputs to zero.
