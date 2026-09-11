@@ -104,6 +104,7 @@ The following documentation is included with the firmware:
 * [`BUILDING.md`](BUILDING.md) — build environment and flashing
 * [`VALIDATION.md`](VALIDATION.md) — firmware and hardware validation
 * [`ASSISTED_FLIGHT.md`](ASSISTED_FLIGHT.md) — altitude-assisted flight
+* [`ERRATA_v1.0.0.md`](ERRATA_v1.0.0.md) — documentation correction for the original v1.0.0 assisted-Landing ramp text
 
 ## Safety
 
