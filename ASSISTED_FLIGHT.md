@@ -34,7 +34,7 @@ WebSocket ownership, and ACK behavior.
 ## Landing
 
 - Application sends `flight_command: landing` and waits for the matching ACK.
-- After ACK, application visibly ramps throttle from 1500 to 1050 over about 6 seconds.
+- After ACK, application visibly ramps throttle from 1500 to 1050 over about 3 seconds.
 - Firmware preserves the proven relationship `target_mm = channel_3 - 1000`, bounded to 50..500 mm.
 - Altitude PID now stays active below the old 200-mm takeoff activation threshold; it is disconnected only after physical touchdown is confirmed.
 - Moving the landing setpoint no longer produces a derivative kick: derivative history is compensated by the exact setpoint delta, so the D term continues to react to real altitude motion instead of the commanded ramp itself.
