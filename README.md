@@ -6,7 +6,7 @@
 
 **Learn it. Build it. Change it. Create your own.**
 
-[Website](https://espflight.com) · [Documentation](https://espflight.com/docs/) · [Hardware Reference](https://github.com/espflight/hardware)
+[Website](https://espflight.com) · [Build v1.0](https://github.com/espflight/docs/blob/main/BUILD_V1.0.md) · [Documentation](https://espflight.com/docs/) · [Hardware Reference](https://github.com/espflight/hardware) · [Application](https://github.com/espflight/application)
 
 **Firmware v1.0.0**
 
@@ -54,6 +54,8 @@ ESPFlight Firmware is the open-source flight-control core of ESPFlight. It handl
 > ESPFlight is an experimental and educational flight-control platform. Validate every hardware configuration carefully before powered flight.
 
 ## Quick Start
+
+For the complete v1.0 path from hardware to first controlled flight, see **[Build ESPFlight v1.0](https://github.com/espflight/docs/blob/main/BUILD_V1.0.md)**.
 
 ### 1. Configure the firmware
 
