@@ -1,0 +1,62 @@
+name: Firmware CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    name: Compile ESPFlight Firmware v1.0.0 baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Configure ESP8266 package index
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://arduino.esp8266.com/stable/package_esp8266com_index.json
+          arduino-cli core update-index
+
+      - name: Install pinned ESP8266 core
+        run: arduino-cli core install esp8266:esp8266@3.1.2
+
+      - name: Install pinned libraries
+        run: |
+          arduino-cli lib update-index
+          arduino-cli lib install "ArduinoJson@6.21.6"
+          arduino-cli lib install "ESPAsyncTCP@2.0.0"
+          arduino-cli lib install "ESPAsyncWebServer@3.6.0"
+          arduino-cli lib install "Adafruit VL53L0X@1.2.5"
+
+      - name: Verify release identity
+        run: |
+          grep -F '#define ESPFLIGHT_FIRMWARE_VERSION "1.0.0"' config.h
+          grep -F '#define ESPFLIGHT_PROTOCOL_VERSION 2U' config.h
+          grep -F '#define ESPFLIGHT_CPU_FREQUENCY_MHZ 160U' config.h
+          grep -F '#define ESPFLIGHT_MOTOR_PWM_FREQUENCY 4000U' config.h
+          grep -F '#define ESPFLIGHT_CONTROL_LOOP_US 4000UL' config.h
+
+      - name: Prepare Arduino sketch directory
+        run: |
+          mkdir -p "$RUNNER_TEMP/espflight"
+          cp ./*.ino ./*.cpp ./*.h "$RUNNER_TEMP/espflight/"
+
+      - name: Compile firmware
+        run: |
+          arduino-cli compile \
+            --fqbn esp8266:esp8266:d1_mini \
+            "$RUNNER_TEMP/espflight"
