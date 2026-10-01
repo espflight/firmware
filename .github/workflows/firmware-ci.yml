@@ -40,7 +40,7 @@ jobs:
         run: |
           arduino-cli lib update-index
           arduino-cli lib install "ArduinoJson@6.21.6"
-          arduino-cli lib install "Adafruit VL53L0X@1.2.5"
+          arduino-cli lib install "Adafruit_VL53L0X@1.2.5"
 
       - name: Install pinned ESP32Async libraries
         run: |
