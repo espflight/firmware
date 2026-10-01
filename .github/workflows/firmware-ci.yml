@@ -15,15 +15,17 @@ permissions:
 jobs:
   compile:
     name: Compile ESPFlight Firmware v1.0.0 baseline
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Arduino CLI
-        uses: arduino/setup-arduino-cli@v2
+        uses: arduino/setup-arduino-cli@81d310742121c928ea9c8bbd407b4217b432ae02 # v2
+        with:
+          version: "1.x"
 
       - name: Configure ESP8266 package index
         run: |
@@ -34,13 +36,22 @@ jobs:
       - name: Install pinned ESP8266 core
         run: arduino-cli core install esp8266:esp8266@3.1.2
 
-      - name: Install pinned libraries
+      - name: Install pinned Library Manager dependencies
         run: |
           arduino-cli lib update-index
           arduino-cli lib install "ArduinoJson@6.21.6"
-          arduino-cli lib install "ESPAsyncTCP@2.0.0"
-          arduino-cli lib install "ESPAsyncWebServer@3.6.0"
           arduino-cli lib install "Adafruit VL53L0X@1.2.5"
+
+      - name: Install pinned ESP32Async libraries
+        run: |
+          mkdir -p "$RUNNER_TEMP/arduino-libraries"
+          git clone --depth 1 --branch v2.0.0 https://github.com/ESP32Async/ESPAsyncTCP.git "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP"
+          git clone --depth 1 --branch v3.6.0 https://github.com/ESP32Async/ESPAsyncWebServer.git "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer"
+
+      - name: Verify pinned async library revisions
+        run: |
+          test "$(git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP" describe --tags --exact-match)" = "v2.0.0"
+          test "$(git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer" describe --tags --exact-match)" = "v3.6.0"
 
       - name: Verify release identity
         run: |
@@ -59,4 +70,5 @@ jobs:
         run: |
           arduino-cli compile \
             --fqbn esp8266:esp8266:d1_mini \
+            --libraries "$RUNNER_TEMP/arduino-libraries" \
             "$RUNNER_TEMP/espflight"
