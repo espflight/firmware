@@ -10,6 +10,8 @@
 
 **Firmware v1.0.0**
 
+**Official v1.0 target: ESP8266 / LOLIN(WEMOS) D1 R2 & mini. ESP32 is not an official v1.0 build target.**
+
 </div>
 
 ESPFlight Firmware is the open-source flight-control core of ESPFlight. It handles stabilization, motor control, safety logic, telemetry, configuration, and communication with the ESPFlight Application.
