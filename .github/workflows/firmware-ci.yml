@@ -12,6 +12,12 @@ on:
 permissions:
   contents: read
 
+env:
+  ARDUINO_CLI_VERSION: "1.5.1"
+  ARDUINO_CLI_LINUX_X64_SHA256: "28a8e119c498a25607821c36cb2dc49e8463941b261a0d99091baa7bc692dd2b"
+  ESPASYNC_TCP_COMMIT: "6aa552d9910515be08af4bda70a29714ddca3025"
+  ESPASYNC_WEBSERVER_COMMIT: "c1888926ed8595f14f4971e9e1538b43ea63aa59"
+
 jobs:
   compile:
     name: Compile ESPFlight Firmware v1.0.0 baseline
@@ -20,12 +26,29 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up Arduino CLI
-        uses: arduino/setup-arduino-cli@81d310742121c928ea9c8bbd407b4217b432ae02 # v2
-        with:
-          version: "1.x"
+      - name: Install pinned Arduino CLI
+        shell: bash
+        run: |
+          archive="$RUNNER_TEMP/arduino-cli_${ARDUINO_CLI_VERSION}_Linux_64bit.tar.gz"
+          bin_dir="$RUNNER_TEMP/arduino-cli-bin"
+
+          curl --fail --location --retry 3 \
+            --output "$archive" \
+            "https://github.com/arduino/arduino-cli/releases/download/v${ARDUINO_CLI_VERSION}/arduino-cli_${ARDUINO_CLI_VERSION}_Linux_64bit.tar.gz"
+
+          echo "${ARDUINO_CLI_LINUX_X64_SHA256}  ${archive}" | sha256sum -c -
+
+          mkdir -p "$bin_dir"
+          tar -xzf "$archive" -C "$bin_dir" arduino-cli
+          echo "$bin_dir" >> "$GITHUB_PATH"
+
+      - name: Verify Arduino CLI version
+        shell: bash
+        run: |
+          arduino-cli version
+          arduino-cli version | grep -E 'Version: 1\.5\.1([[:space:]]|$)'
 
       - name: Configure ESP8266 package index
         run: |
@@ -42,16 +65,26 @@ jobs:
           arduino-cli lib install "ArduinoJson@6.21.6"
           arduino-cli lib install "Adafruit_VL53L0X@1.2.5"
 
-      - name: Install pinned ESP32Async libraries
+      - name: Install commit-pinned ESP32Async libraries
+        shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/arduino-libraries"
-          git clone --depth 1 --branch v2.0.0 https://github.com/ESP32Async/ESPAsyncTCP.git "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP"
-          git clone --depth 1 --branch v3.6.0 https://github.com/ESP32Async/ESPAsyncWebServer.git "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer"
+
+          git init "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP"
+          git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP" remote add origin https://github.com/ESP32Async/ESPAsyncTCP.git
+          git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP" fetch --depth 1 origin "$ESPASYNC_TCP_COMMIT"
+          git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP" checkout --detach FETCH_HEAD
+
+          git init "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer"
+          git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer" remote add origin https://github.com/ESP32Async/ESPAsyncWebServer.git
+          git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer" fetch --depth 1 origin "$ESPASYNC_WEBSERVER_COMMIT"
+          git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer" checkout --detach FETCH_HEAD
 
       - name: Verify pinned async library revisions
+        shell: bash
         run: |
-          test "$(git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP" describe --tags --exact-match)" = "v2.0.0"
-          test "$(git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer" describe --tags --exact-match)" = "v3.6.0"
+          test "$(git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncTCP" rev-parse HEAD)" = "$ESPASYNC_TCP_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/arduino-libraries/ESPAsyncWebServer" rev-parse HEAD)" = "$ESPASYNC_WEBSERVER_COMMIT"
 
       - name: Verify release identity
         run: |
