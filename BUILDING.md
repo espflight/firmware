@@ -1,11 +1,16 @@
 # ESPFlight Firmware v1.0.0 — Reproducible Build Baseline
 
 Use the following pinned toolchain for the v1.0.0 release build. Keeping these
-versions fixed avoids unexpected behavior changes caused by later library or
-ESP8266 core updates.
+versions fixed avoids unexpected behavior changes caused by later toolchain,
+library, or ESP8266 core updates.
 
-## Board / core
+This defines a reproducible toolchain baseline. It does not claim that every
+host environment will produce byte-identical binaries.
 
+## Toolchain / board / core
+
+- Arduino CLI: **1.5.1**
+- Arduino CLI Linux x64 archive SHA-256: **28a8e119c498a25607821c36cb2dc49e8463941b261a0d99091baa7bc692dd2b**
 - Target board: LOLIN(WEMOS) D1 R2 & mini / ESP8266
 - ESP8266 Arduino Core: **3.1.2**
 - CPU frequency: **160 MHz**
@@ -13,12 +18,12 @@ ESP8266 core updates.
 ## Required libraries
 
 - ArduinoJson: **6.21.6**
-- ESPAsyncTCP (ESP8266): **2.0.0**
-- ESPAsyncWebServer: **3.6.0**
+- ESPAsyncTCP (ESP8266): **2.0.0**, pinned in CI to commit `6aa552d9910515be08af4bda70a29714ddca3025`
+- ESPAsyncWebServer: **3.6.0**, pinned in CI to commit `c1888926ed8595f14f4971e9e1538b43ea63aa59`
 
 `ESPAsyncTCP` and `ESPAsyncWebServer` are maintained under the ESP32Async
-organization. Do not silently substitute a different major version for a
-release build.
+organization. Release CI resolves them by exact commit rather than a movable
+tag. Do not silently substitute a different revision for a release build.
 
 ## Release configuration
 
