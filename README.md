@@ -4,7 +4,7 @@
 
 **Open-source flight-control firmware for ESP-based drones**
 
-**Learn it. Build it. Change it. Create your own.**
+**Learn. Build. Fly.**
 
 [Website](https://espflight.com) · [Build v1.0](https://github.com/espflight/docs/blob/main/BUILD_V1.0.md) · [Documentation](https://espflight.com/docs/) · [Hardware Reference](https://github.com/espflight/hardware) · [Application](https://github.com/espflight/application)
 
@@ -140,7 +140,7 @@ See the [`LICENSE`](LICENSE) file for the complete terms.
 
 **ESPFlight Firmware v1.0.0**
 
-**Learn it. Build it. Change it. Create your own.**
+**Learn. Build. Fly.**
 
 [espflight.com](https://espflight.com)
 
